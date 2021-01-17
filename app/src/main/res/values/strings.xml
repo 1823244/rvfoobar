@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">RVFooBar</string>
+    <string name="default_card_title">Card Title</string>
+    <string name="default_card_content">Card Content</string>
+    <string name="default_card_action">Action</string>
+    <string name="view_cards">View Cards</string>
+    <string name="about">About</string>
+</resources>
