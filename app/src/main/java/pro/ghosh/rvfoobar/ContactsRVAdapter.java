@@ -1,6 +1,7 @@
 package pro.ghosh.rvfoobar;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -21,9 +23,10 @@ public class ContactsRVAdapter extends RecyclerView.Adapter<ContactsRVAdapter.Vi
 
     private final Context ctx;
     private ArrayList<Card> cards = new ArrayList<>();
+    private final String CONTACTS_RV_DEBUG = "CONTACTS_RV_DEBUG";
 
-    public ContactsRVAdapter(Context ctx) {
-        this.ctx = ctx;
+    public ContactsRVAdapter(Context context) {
+        this.ctx = context;
     }
 
     @NonNull
@@ -37,6 +40,9 @@ public class ContactsRVAdapter extends RecyclerView.Adapter<ContactsRVAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.cvParent.setOnClickListener(v ->
+                Log.d(CONTACTS_RV_DEBUG, cards.get(position).getTitle() + " Clicked")
+        );
         holder.tvCardTitle.setText(cards.get(position).getTitle());
         holder.tvCardContent.setText(cards.get(position).getContent());
         Glide.with(ctx)
@@ -44,11 +50,18 @@ public class ContactsRVAdapter extends RecyclerView.Adapter<ContactsRVAdapter.Vi
                 .load(cards.get(position).getImageUrl())
                 .into(holder.ivCardImage);
         holder.btnCardAction.setOnClickListener(v ->
-                Snackbar.make(holder.itemView, cards.get(position).getTitle() + " Clicked", Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(
+                        holder.itemView,
+                        cards.get(position).getTitle() + " Clicked",
+                        Snackbar.LENGTH_INDEFINITE
+                )
                         .setAction("Dismiss", _v ->
-                                Toast.makeText(ctx, "Snackbar Dismissed", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(ctx, "Snackbar Dismissed", Toast.LENGTH_SHORT)
+                                        .show()
                         )
-                        .show());
+                        .setActionTextColor(ctx.getColor(R.color.teal_200))
+                        .show()
+        );
     }
 
     @Override
@@ -61,11 +74,12 @@ public class ContactsRVAdapter extends RecyclerView.Adapter<ContactsRVAdapter.Vi
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvCardTitle;
         private final TextView tvCardContent;
         private final ImageView ivCardImage;
         private final Button btnCardAction;
+        private final MaterialCardView cvParent;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,6 +87,7 @@ public class ContactsRVAdapter extends RecyclerView.Adapter<ContactsRVAdapter.Vi
             tvCardContent = itemView.findViewById(R.id.tvCardContent);
             ivCardImage = itemView.findViewById(R.id.ivCardImage);
             btnCardAction = itemView.findViewById(R.id.btnCardAction);
+            cvParent = itemView.findViewById(R.id.cvParent);
         }
     }
 }

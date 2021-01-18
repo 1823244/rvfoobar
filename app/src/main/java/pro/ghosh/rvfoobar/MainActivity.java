@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.miAbout:
                 Toast.makeText(this, "About Clicked", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.miHelp:
+                Toast.makeText(this, "Help Clicked", Toast.LENGTH_SHORT).show();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
